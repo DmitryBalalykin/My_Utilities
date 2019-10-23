@@ -25,9 +25,10 @@ namespace MyUtilities
         public MainForm()
         {
             InitializeComponent();
-            generatorNumber = new GeneratorNumber(lbl_numer, tbRandom, cbNumer);
+            generatorNumber = new GeneratorNumber(lbl_numer, nud_1, nud_2, tbRandom, cbNumer);
             counter = new Counter();
             notepadUse = new NotepadUse(rtb);
+            
             generatorPassword = new GeneratorPassword(clbPassword, nudPassLenght, Password);
             convertUnit = new ConvertUnit(cbFrom, cbTo, tbFrom, tbTo, cbMetric);
         }
@@ -60,7 +61,7 @@ namespace MyUtilities
 
         private void Btn_generator_Click(object sender, EventArgs e)
         {
-            generatorNumber.Generator(nud_1, nud_2);
+            generatorNumber.Generator();
         }
 
         private void BtnClearGenerate_Click(object sender, EventArgs e)

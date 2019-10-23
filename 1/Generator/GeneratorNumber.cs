@@ -13,13 +13,22 @@ namespace MyUtilities
         private int numerOne;
         private int numerTwo;
         private int resultRandom;
+        private NumericUpDown _numOne;
+        private NumericUpDown _numTwo;
         private readonly Label _label;
         private readonly TextBox _textBox;
         private readonly CheckBox _checkBox;
 
-        public GeneratorNumber(Label label,TextBox textBox, CheckBox checkBox)
+        public GeneratorNumber()
+        {
+
+        }
+
+        public GeneratorNumber(Label label, NumericUpDown numOne, NumericUpDown numTwo, TextBox textBox, CheckBox checkBox)
         {
             _label = label;
+            _numOne = numOne;
+            _numTwo = numTwo;
             _textBox = textBox;
             _checkBox = checkBox;
             _random = new Random();
@@ -31,29 +40,54 @@ namespace MyUtilities
         /// <param name="numOne">минимальное значение</param>
         /// <param name="numTwo">максимальное значение</param>
         /// <returns></returns>
-        public void Generator(NumericUpDown numOne, NumericUpDown numTwo)
+        public void Generator()
         {
-            numerOne = Convert.ToInt32(numOne.Value);
-            numerTwo = Convert.ToInt32(numTwo.Value);
+            numerOne = Convert.ToInt32(_numOne.Value);
+            numerTwo = Convert.ToInt32(_numTwo.Value);
 
-            resultRandom = _random.Next(numerOne, numerTwo) + 1;
-            _label.Text = resultRandom.ToString();
+            bool result = CheckGenerator(numerOne, numerTwo);
 
-            if (numOne.Value > numTwo.Value)
+            if (result is true)
+            {
+                resultRandom = _random.Next(numerOne, numerTwo) + 1;
+                _label.Text = resultRandom.ToString();
+
+                SaveGenerator();
+            }
+        }
+
+        /// <summary>
+        /// Проверка значений генератора
+        /// </summary>
+        /// <param name="numerOne">минимальное значение</param>
+        /// <param name="numerTwo">максимальное значение</param>
+        /// <returns></returns>
+        public bool CheckGenerator(int numerOne, int numerTwo)
+        {
+            if (numerOne > numerTwo)
             {
                 MessageBox.Show("Минимальное значение не может быть больше максимального значения");
                 _label.Text = "0";
+                return false;
             }
             else
             {
-                if (_checkBox.Checked is true)
-                {
-                    if (_textBox.Text.IndexOf(resultRandom.ToString()) == -1)
-                        SaveResult(resultRandom);
-                }
-                else
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Сохранение значений генератора
+        /// </summary>
+        public void SaveGenerator()
+        {
+            if (_checkBox.Checked is true)
+            {
+                if (_textBox.Text.IndexOf(resultRandom.ToString()) == -1)
                     SaveResult(resultRandom);
             }
+            else
+                SaveResult(resultRandom);
         }
 
         /// <summary>
